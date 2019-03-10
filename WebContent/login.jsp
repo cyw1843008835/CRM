@@ -87,6 +87,7 @@ margin: 0px auto; width: 936px;
 </style>
 <script type="text/javascript">
 	function login() {
+		
 		var username = $("#userName").val();
 		var password = $("#password").val();
 		var rolename = $("#roleName").val();
@@ -163,11 +164,12 @@ margin: 0px auto; width: 936px;
 												<tr>
 													<td width=100 align=right><input id="btnlogin"
 														src="${pageContext.request.contextPath}/images/btn1.jpg"
-														type="image" name="btnlogin" /></td>
+														type="image" name="btnlogin" 
+														onclick="javascript:login();return false;"/></td>
 													<td width=100 align="center"><input id=btnreset
 														src="${pageContext.request.contextPath}/images/btn2.jpg"
 														type=image name=btnreset
-														onclick="javascript:adminlogin.reset();return false;" />
+														onclick="javascript:reset();return false;" />
 													</td>
 												</tr>
 											</tbody>
