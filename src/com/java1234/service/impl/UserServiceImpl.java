@@ -1,5 +1,8 @@
 package com.java1234.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -24,5 +27,17 @@ public class UserServiceImpl implements UserService {
 	public User login(User user) {
 		// TODO Auto-generated method stub
 		return userDao.login(user);
+	}
+
+	@Override
+	public List<User> find(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.find(map);
+	}
+
+	@Override
+	public Long getTotal(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return userDao.getTotal(map);
 	}
 }
