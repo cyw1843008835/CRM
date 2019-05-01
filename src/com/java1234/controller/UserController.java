@@ -75,4 +75,34 @@ public class UserController {
 		ResponseUtil.write(response, result);
 		return null;
 	}
+
+	@RequestMapping("/save")
+	public String save(User user, HttpServletResponse response) throws Exception {
+		int resultTotal = 0;
+		if (user.getId() == null) {
+			resultTotal = userService.add(user);
+		} else {
+			resultTotal = userService.update(user);
+		}
+		JSONObject result = new JSONObject();
+		if (resultTotal > 0) {
+			result.put("success", true);
+		} else {
+			result.put("success", false);
+		}
+		ResponseUtil.write(response, result);
+		return null;
+	}
+
+   @RequestMapping("/delete")
+	public String delete(@RequestParam(value = "ids") String ids, HttpServletResponse response) throws Exception {
+		String[] idStr = ids.split(",");
+		for (int i = 0; i < idStr.length; i++) {
+			userService.delete(Integer.parseInt(idStr[i]));
+		}
+		JSONObject result = new JSONObject();
+		result.put("success", true);
+		ResponseUtil.write(response, result);
+		return null;
+	}
 }

@@ -18,11 +18,97 @@
 	src="${pageContext.request.contextPath}/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
 </head>
 <script type="text/javascript">
+var url;
 	function searchUser() {
 		$("#dg").datagrid('load', {
 			"userName" : $("#s_userName").val()
 		});
 
+	}
+	
+	function openUserAddDialog(){
+		$("#dlg").dialog("open").dialog("setTitle","添加用户信息");
+		url="${pageContext.request.contextPath}/user/save.do";
+	}
+	function openUserModifyDialog(){
+		var selectedRows=$("#dg").datagrid("getSelections");
+		if(selectedRows.length!=1){
+			$.messager.alert("系统提示","请选择一条要编辑的数据。");
+			return;
+		}
+		var row=selectedRows[0];
+		$("#dlg").dialog("open").dialog("setTitle","编辑用户信息");
+		$("#fm").form("load",row);
+	    url="${pageContext.request.contextPath}/user/save.do?id="+row.id;
+	}
+	
+	function saveUser(){
+		$("#fm").form("submit",
+		{
+			url:url,
+			onSubmit:function(){
+				if($("#roleName").combobox("getValue")==""){
+					$.messager.alert("系统提示","请选择用户角色");
+					return false;
+				}
+				return $(this).form("validate");
+			},
+			success:function(result){
+				var result=eval('('+result+')');
+				if(result.success){
+					$.messager.alert("系统提示","保存成功。");
+					resetValue();
+					$("#dlg").dialog("close");
+					$("#dg").datagrid("reload");
+				}else{
+					$.messager.alert("系统提示","保存失败");
+				return;
+				}
+			}
+			
+		}		
+		);
+		
+	}
+	function resetValue(){
+		$("#userName").val("");
+		$("#password").val("");
+		$("#trueName").val("");
+		$("#email").val("");
+		$("#phone").val("");
+		$("#roleName").combobox("setValue","");
+		
+	}
+	
+	function closeUserDialog(){
+		$("#dlg").dialog("close");
+		resetValue();
+	}
+	function deleteUser(){
+		var selectedRows=$("#dg").datagrid("getSelections");
+		if(selectedRows.length==0){
+			$.messager.alert("系统提示","请选择要删除的数据");
+			return;
+		}
+		var strIds=[];
+			for(var i=0;i<selectedRows.length;i++){
+				strIds.push(selectedRows[i].id);
+				}
+		var ids=strIds.join(",");
+		$.messager.confirm("系统提示","您确定要删除这<font color='red'>"+selectedRows.length+"</font>条数据吗？",function(r){
+			if(r){
+				$.post("${pageContext.request.contextPath}/user/delete.do",{ids:ids},function(result){
+					if(result.success){
+						$.messager.alert("系统提示","数据已成功删除");
+						$("#dg").datagrid("reload");
+					}else{
+						$.messager.alert("系统提示","数据删除失败，请联系系统管理员");
+						
+					}
+					
+				},"json");
+			}
+		});
 	}
 </script>
 <body style="margin: 1px">
@@ -59,6 +145,47 @@
 				href="javascript:searchUser()" class="easyui-linkbutton"
 				iconCls="icon-search" plain="true">搜索</a>
 		</div>
+	</div>
+	<div id="dlg" class="easyui-dialog" style="width:620px;height:250px;padding 10px 20px" closed="true" buttons="#dlg-buttons">
+	<form id="fm" method="post">
+	<table cellspacing="8px">
+	<tr>
+	<td>用户名：</td>
+	<td><input type="text" id="userName" name="userName" class="easyui-validatebox" required="true" /><font color="red">*</font></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>密码：</td>
+	<td><input type="text" id="password" name="password" class="easyui-validatebox" required="true" /><font color="red">*</font></td>
+	</tr>
+	<tr>
+	<td>真实姓名：</td>
+	<td><input type="text" id="trueName" name="trueName" class="easyui-validatebox" required="true" /><font color="red">*</font></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>邮箱：</td>
+	<td><input type="text" id="email" name="email" class="easyui-validatebox" validType="email" required="true" /><font color="red">*</font></td>
+	</tr>
+	<tr>
+	<td>联系电话：</td>
+	<td><input type="text" id="phone" name="phone" class="easyui-validatebox" required="true" /><font color="red">*</font></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>用户角色：</td>
+	<td>
+	<select class="easyui-combobox" id="roleName" name="roleName" style="width；154px" editable="false" panelHeight="auto">
+	<option value="">请选择角色</option>
+	<option value="系统管理员">系统管理员</option>
+	<option value="销售主管">销售主管</option>
+	<option value="客户经理">客户经理</option>
+	<option value="高管">高管</option>
+	
+	</select>
+	&nbsp;<font color="red">*</font>
+	</td>
+	</tr>
+	</table>
+	</form>
+	</div>
+	<div id="dlg-buttons">
+	<a href="javascript:saveUser()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+	<a href="javascript:closeUserDialog()" class="easyui-linkbutton" iconCls="icon-cancel">关闭</a>
 	</div>
 </body>
 </html>
