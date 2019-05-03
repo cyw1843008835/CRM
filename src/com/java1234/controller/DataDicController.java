@@ -62,4 +62,34 @@ public class DataDicController {
 		ResponseUtil.write(response, jsonArray);
 		return null;
 	}
+
+	@RequestMapping("/save")
+	public String save(HttpServletResponse response, DataDic dataDic) throws Exception {
+		int totalResult = 0;
+		if (dataDic.getId() == null) {
+			totalResult = dataDicService.add(dataDic);
+		} else {
+			totalResult = dataDicService.update(dataDic);
+		}
+		JSONObject result = new JSONObject();
+		if (totalResult > 0) {
+			result.put("success", true);
+		} else {
+			result.put("success", false);
+		}
+		ResponseUtil.write(response, result);
+		return null;
+	}
+
+	@RequestMapping("/delete")
+	public String delete(HttpServletResponse response, @RequestParam(value = "ids") String ids) throws Exception {
+		String[] idStr = ids.split(",");
+		for (int i = 0; i < idStr.length; i++) {
+			dataDicService.delete(Integer.parseInt(idStr[i]));
+		}
+		JSONObject result = new JSONObject();
+		result.put("success", true);
+		ResponseUtil.write(response, result);
+		return null;
+	}
 }

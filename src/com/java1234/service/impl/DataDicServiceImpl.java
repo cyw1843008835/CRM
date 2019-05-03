@@ -41,4 +41,22 @@ public class DataDicServiceImpl implements DataDicService {
 		return dataDicDao.findAll();
 	}
 
+	@Override
+	public int add(DataDic dataDic) {
+		// TODO Auto-generated method stub
+		return dataDicDao.add(dataDic);
+	}
+
+	@Override
+	public int update(DataDic dataDic) {
+		// TODO Auto-generated method stub
+		return dataDicDao.update(dataDic);
+	}
+
+	@Override
+	public int delete(Integer id) {
+		// TODO Auto-generated method stub
+		return dataDicDao.delete(id);
+	}
+
 }

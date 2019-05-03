@@ -19,4 +19,10 @@ public interface DataDicService {
 
 	public Long getTotal(Map<String, Object> map);
 
+	public int add(DataDic dataDic);
+
+	public int update(DataDic dataDic);
+
+	public int delete(Integer id);
+
 }
