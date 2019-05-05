@@ -18,4 +18,10 @@ public interface UserService {
 	public List<User> find(Map<String, Object> map);
 
 	public Long getTotal(Map<String, Object> map);
+
+	public int add(User user);
+
+	public int update(User user);
+
+	public int delete(Integer id);
 }

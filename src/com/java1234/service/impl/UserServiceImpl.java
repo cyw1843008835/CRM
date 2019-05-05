@@ -40,4 +40,22 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDao.getTotal(map);
 	}
+
+	@Override
+	public int add(User user) {
+		// TODO Auto-generated method stub
+		return userDao.add(user);
+	}
+
+	@Override
+	public int update(User user) {
+		// TODO Auto-generated method stub
+		return userDao.update(user);
+	}
+
+	@Override
+	public int delete(Integer id) {
+		// TODO Auto-generated method stub
+		return userDao.delete(id);
+	}
 }

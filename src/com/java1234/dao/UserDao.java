@@ -36,4 +36,28 @@ public interface UserDao {
 	 */
 
 	public Long getTotal(Map<String, Object> map);
+
+	/**
+	 * 用户信息添加
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int add(User user);
+
+	/**
+	 * 用户信息修改
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public int update(User user);
+
+	/**
+	 * 用户信息删除
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public int delete(Integer id);
 }
